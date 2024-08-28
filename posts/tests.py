@@ -35,3 +35,22 @@ class HomePageTest(TestCase):
         self.assertContains(response, "test content")
         self.assertContains(response, "test title2")
         self.assertContains(response, "test content2")
+
+
+class DetailPageTest(TestCase):
+    def setUp(self):
+        self.post = Post.objects.create(
+            title="test title",
+            content="test content",
+        )
+        self.url = "/posts/{}/".format(self.post.id)
+
+        self.response = self.client.get(self.url)
+
+    def test_detail_page(self):
+        self.assertEqual(self.response.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(self.response, "posts/detail.html")
+
+    def test_detail_page_returns_post(self):
+        self.assertContains(self.response, self.post.title)
+        self.assertContains(self.response, self.post.content)
