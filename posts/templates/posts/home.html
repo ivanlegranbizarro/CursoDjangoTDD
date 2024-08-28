@@ -2,5 +2,5 @@
 
 {% for post in posts %}
   <p>{{ post.title }}</p>
-  <p>{{ post.content }}</p>
+  <p>{{ post.content|truncatewords:50 }}</p>
 {% endfor %}

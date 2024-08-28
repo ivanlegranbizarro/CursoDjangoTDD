@@ -27,6 +27,10 @@ class HomePageTest(TestCase):
         response = self.client.get("/")
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, "posts/home.html")
+
+    def test_home_page_returns_posts_list(self):
+        response = self.client.get("/")
+        self.assertEqual(len(response.context["posts"]), 2)
         self.assertContains(response, "test title")
         self.assertContains(response, "test content")
         self.assertContains(response, "test title2")
