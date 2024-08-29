@@ -55,13 +55,12 @@ class AccountCreationTest(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(User.objects.count(), 0)
 
+    def test_user_is_being_redirected_after_signup(self):
+        redirect_url = "/accounts/login/"
 
-def test_user_is_being_redirected_after_signup(self):
-    redirect_url = "/accounts/login/"
+        response = self.client.post("/accounts/signup/", self.sample_data)
 
-    response = self.client.post("/accounts/signup/", self.sample_data)
-
-    self.assertRedirects(response, redirect_url)
+        self.assertRedirects(response, redirect_url)
 
     def test_login_page_exists(self):
         url = "/accounts/login/"
