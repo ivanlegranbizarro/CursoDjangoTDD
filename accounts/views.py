@@ -36,7 +36,7 @@ def login_page(request):
             if user is not None:
                 login(request, user)
 
-            return redirect("posts:home")
+                return redirect("posts:home")
 
     context = {"form": form}
 
