@@ -1,26 +1,26 @@
 from http import HTTPStatus
 
-from django.contrib.auth.models import User
 from django.test import TestCase
+from model_bakery import baker
 
 from .models import Post
 
 
-# Base class with the general setup
+# Base class with the general setup using model_bakery
 class BaseTestCase(TestCase):
     def setUp(self):
-        # Create a user for all tests
-        self.user = User.objects.create_user(
-            username="testuser",
-            password="testpassword",
-        )
-        # Create posts for all tests
-        self.post1 = Post.objects.create(
+        # Create a user using model_bakery
+        self.user = baker.make("auth.User", username="testuser")
+
+        # Create posts using model_bakery
+        self.post1 = baker.make(
+            "Post",
             title="test title",
             content="test content",
             author=self.user,
         )
-        self.post2 = Post.objects.create(
+        self.post2 = baker.make(
+            "Post",
             title="test title2",
             content="test content2",
             author=self.user,
