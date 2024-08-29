@@ -47,10 +47,25 @@ class AccountCreationTest(TestCase):
         user = form.save()
         self.assertEqual(user.username, self.sample_data["username"])
         self.assertEqual(user.email, self.sample_data["email"])
-        self.assertTrue(User.objects.count() == 1)
+        self.assertEqual(User.objects.count(), 1)
 
     def test_user_can_not_be_created_with_no_correct_data(self):
         form = self.form_class()
 
         self.assertFalse(form.is_valid())
         self.assertEqual(User.objects.count(), 0)
+
+
+def test_user_is_being_redirected_after_signup(self):
+    redirect_url = "/accounts/login/"
+
+    response = self.client.post("/accounts/signup/", self.sample_data)
+
+    self.assertRedirects(response, redirect_url)
+
+    def test_login_page_exists(self):
+        url = "/accounts/login/"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(response, "accounts/login.html")
