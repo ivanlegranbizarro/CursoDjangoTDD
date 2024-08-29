@@ -72,3 +72,8 @@ class PostAuthorTest(BaseTestCase):
     def test_post_author(self):
         self.assertEqual(self.post1.author, self.user)
         self.assertEqual(self.post2.author, self.user)
+
+    def test_post_author_name_is_accessible_in_post_detail_page(self):
+        url = f"/posts/{self.post1.id}/"
+        response = self.client.get(url)
+        self.assertContains(response, self.user.username)
