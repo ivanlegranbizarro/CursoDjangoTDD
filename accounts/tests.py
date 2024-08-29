@@ -13,6 +13,13 @@ class AccountCreationTest(TestCase):
     def setUp(self):
         self.form_class = UserRegistrationForm
 
+        self.sample_data = {
+            "username": "testuser",
+            "email": "Jt2pK@example.com",
+            "password1": "testpassword",
+            "password2": "testpassword",
+        }
+
     def test_signup_page_exists(self):
         url = "/accounts/signup/"
         response = self.client.get(url)
@@ -30,19 +37,14 @@ class AccountCreationTest(TestCase):
 
     def test_signup_form_submission(self):
         form = self.form_class()
-        sample_data = {
-            "username": "testuser",
-            "email": "Jt2pK@example.com",
-            "password1": "testpassword",
-            "password2": "testpassword",
-        }
 
-        form = self.form_class(sample_data)
+        form = self.form_class(self.sample_data)
         self.assertTrue(form.is_valid())
 
-        form.save()
+    def test_user_creation_through_form(self):
+        form = self.form_class(self.sample_data)
 
-        self.assertEqual(User.objects.count(), 1)
-
-        user = User.objects.get(username="testuser")
-        self.assertEqual(user.email, "Jt2pK@example.com")
+        user = form.save()
+        self.assertEqual(user.username, self.sample_data["username"])
+        self.assertEqual(user.email, self.sample_data["email"])
+        self.assertTrue(User.objects.count() == 1)
