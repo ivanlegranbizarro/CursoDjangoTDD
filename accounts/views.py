@@ -1,5 +1,7 @@
 from django.shortcuts import redirect, render
 
+from django.contrib.auth.forms import AuthenticationForm
+
 from .forms import UserRegistrationForm
 
 # Create your views here.
@@ -21,4 +23,13 @@ def signup(request):
 
 
 def login_page(request):
-    return render(request, "accounts/login.html")
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            return redirect("posts:home")
+    else:
+        form = AuthenticationForm()
+
+    context = {"form": form}
+
+    return render(request, "accounts/login.html", context)

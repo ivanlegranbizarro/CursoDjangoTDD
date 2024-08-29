@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.test import TestCase
 
@@ -68,3 +68,29 @@ class AccountCreationTest(TestCase):
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, "accounts/login.html")
+
+    def test_login_page_has_login_form(self):
+        url = "/accounts/login/"
+        response = self.client.get(url)
+        form = response.context.get("form")
+
+        self.assertIsInstance(form, AuthenticationForm)
+
+    def test_user_can_login(self):
+        user = User.objects.create_user(
+            username=self.sample_data["username"],
+            email=self.sample_data["email"],
+            password=self.sample_data[
+                "password1"
+            ],
+        )
+
+        user_name = user.username
+        password = self.sample_data["password1"]
+
+        response = self.client.post(
+            "/accounts/login/", {"username": user_name, "password": password}
+        )
+
+        self.assertRedirects(response, "/")
+        self.assertTrue(user.is_authenticated)
