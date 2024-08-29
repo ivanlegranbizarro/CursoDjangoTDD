@@ -48,3 +48,9 @@ class AccountCreationTest(TestCase):
         self.assertEqual(user.username, self.sample_data["username"])
         self.assertEqual(user.email, self.sample_data["email"])
         self.assertTrue(User.objects.count() == 1)
+
+    def test_user_can_not_be_created_with_no_correct_data(self):
+        form = self.form_class()
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(User.objects.count(), 0)
