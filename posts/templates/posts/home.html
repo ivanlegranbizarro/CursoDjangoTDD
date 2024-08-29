@@ -1,5 +1,10 @@
 <h1>Posts</h1>
 
+
+<a href="{% url 'accounts:signup' %}">
+    <h2>Signup Here</h2>
+</a>
+
 {% for post in posts %}
   <a href="{% url 'posts:detail' post.id %}"><p>{{ post.title }}</p></a>
   <p>{{ post.content|truncatewords:50 }}</p>
