@@ -1,9 +1,11 @@
 <h1>Posts</h1>
 
-
-<a href="{% url 'accounts:signup' %}">
-    <h2>Signup Here</h2>
-</a>
+{% if user.is_authenticated %}
+  Logout
+{% else %}
+  <a href="{% url 'accounts:signup' %}"><h2>Signup Here</h2></a>
+  <a href="{% url 'accounts:login' %}"><h2>Login</h2></a>
+{% endif %}
 
 {% for post in posts %}
   <a href="{% url 'posts:detail' post.id %}"><p>{{ post.title }}</p></a>
